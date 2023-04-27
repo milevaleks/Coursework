@@ -1,0 +1,26 @@
+<th:block>
+    <header>
+        <nav>
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+                <th:block sec:authorize="!isAuthenticated()">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
+                </th:block>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="btn btn-outline-success" th:href="@{/product/add}">Add product</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="nav-item">
+                        <input class="btn btn-outline-danger" type="submit" value="Sign Out"/>
+                    </form>
+                </li>
+
+            </ul>
+        </nav>
+    </header>
+
+</th:block>

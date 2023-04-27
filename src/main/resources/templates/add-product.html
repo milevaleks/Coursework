@@ -1,0 +1,78 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="./fragments/head.html"></th:block>
+</head>
+<body>
+<header th:insert="./fragments/header.html">
+</header>
+
+<main>
+    <section id="add">
+        <div class="wrapper">
+            <h2 id="hid">Add product</h2>
+            <form enctype="multipart/form-data" id="myform" name="form" th:object="${registerProductDto}"
+                  th:action="@{/product/add}" method="post">
+                <div class="form-group">
+                    <input hidden class="form-control" th:field="*{id}" type="text" placeholder="id" id="id">
+
+                </div>
+                <div class="form-group">
+                    <input class="form-control" th:field="*{title}" type="text" placeholder="title" id="name">
+                    <small th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+                           class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" multiple th:field="*{description}" type="text" placeholder="description"
+                           id="name">
+                    <small th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                           class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" th:field="*{image}" type="file" placeholder="image" accept="image/*"
+                           id="name" multiple>
+                    <small  class="form-text text-muted">Max 3 images</small>
+                    <small th:if="${#fields.hasErrors('image')}" th:errors="*{image}"
+                           class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" th:field="*{originalPrice}" type="number" placeholder="original price"
+                           id="name">
+                    <small th:if="${#fields.hasErrors('originalPrice')}" th:errors="*{originalPrice}"
+                           class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" th:field="*{soldPrice}" type="number" placeholder="sold price"
+                           id="name">
+                    <small th:if="${#fields.hasErrors('soldPrice')}" th:errors="*{soldPrice}"
+                           class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" th:field="*{quantity}" type="number" placeholder="quantity" id="name">
+                    <small th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"
+                           class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <select th:field="*{category}" class="form-select">
+                        <option th:each="category : ${T(com.project.project.domain.Category).values()}"
+                                th:value="${category}" th:text="${category}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" th:field="*{code}" type="text" placeholder="code" id="name">
+                    <small th:if="${#fields.hasErrors('code')}" th:errors="*{code}"
+                           class="form-text text-danger"></small>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+        </div>
+    </section>
+</main>
+
+<footer th:insert="./fragments/footer.html"></footer>
+
+<th:block th:insert="./fragments/scripts.html"></th:block>
+</body>
+</html>

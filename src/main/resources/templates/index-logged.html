@@ -1,0 +1,113 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="./fragments/head.html"></th:block>
+</head>
+
+<body>
+<header th:insert="./fragments/header.html">
+
+</header>
+
+<main>
+    <section id="searchSection">
+
+        <form th:action="@{/product}" method="get">
+            <div class="input-group" style="    justify-content: space-evenly;
+    align-items: baseline;
+    width: 50%;
+    margin: 0 auto;">
+
+                <div class="form-outline" style="    margin: 0 5px;
+">
+
+                    <input th:name="title" th:value="${title}" placeholder="Title" type="search" id="form1"
+                           class="form-control"/>
+                </div>
+                <div class="form-outline" style="    margin: 0 5px;
+">
+
+                    <input style="    margin: 0 5px;
+" th:value="${code}" placeholder="Code" th:name="code" type="search" id="form2"
+                           class="form-control"/>
+                </div>
+                <div  style="margin:0 10px" class="form-outline">
+                    <select th:value="${category}" th:selected="${category}" id="categorySelect" th:name="category"
+                            class="form-control">
+                        <option th:each="category : ${T(com.project.project.domain.Category).values()}"
+                                th:value="${category}" th:text="${category}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="form-control btn btn-primary">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </section>
+    <section class="table">
+        <h1 style="text-align: center">Products</h1>
+        <small style="text-align: center" class="form-text text-muted">Five elements per page</small>
+
+        <h1 th:if="${#lists.isEmpty(products)}" style="text-align: center">Products not found</h1>
+        <table th:unless="${#lists.isEmpty(products)}" class="table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Images</th>
+                <th scope="col">Original price</th>
+                <th scope="col">Sold price</th>
+                <th scope="col">Quantity price</th>
+                <th scope="col">Category</th>
+                <th scope="col">Code</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+
+            <tbody th:each="product : ${products}">
+            <tr>
+                <th th:text="${product.id}" scope="row"></th>
+                <td th:text="${product.title}"></td>
+                <td th:text="${product.description}"></td>
+                <td>
+                    <th:block th:each="image : ${product.images}">
+                        <a th:href="@{/product/download/{id}(id = ${image.id})}">Download</a>
+                    </th:block>
+                </td>
+                <td th:text="${product.originalPrice}"></td>
+                <td th:text="${product.soldPrice}"></td>
+                <td th:text="${product.quantity}"></td>
+                <td th:text="${product.category}"></td>
+                <td th:text="${product.code}"></td>
+                <td><a th:href="@{/product/edit/{id}(id=${product.id})}" class="btn btn-warning">Edit</a></td>
+                <td>
+                    <button data-toggle="modal" data-target="#deleteModal" id="deleteModalBtn" class="btn btn-danger">
+                        Delete
+                    </button>
+                    <!-- Modal -->
+                    <th:block th:insert="./fragments/modal.html"></th:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul style="justify-content: center" class="pagination pagination-circle pg-blue">
+                <th:block>
+                    <li th:each="i : ${#numbers.sequence( 1, paginationSize)}" class="page-item">
+                        <a class="page-link" th:href="@{/product(pageNumber=${i}-1, title = ${#request.getParameter('title')}, category =${#request.getParameter('category')}, code =
+                        ${#request.getParameter('code')})}" th:text="${i}"></a>
+                    </li>
+                </th:block>
+            </ul>
+        </nav>
+    </section>
+
+</main>
+<footer th:insert="./fragments/footer.html"></footer>
+
+<th:block th:insert="./fragments/scripts.html"></th:block>
+</body>
+</html>
